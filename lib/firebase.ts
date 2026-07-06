@@ -1,6 +1,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getMessaging, isSupported } from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAP7zTp1JSOBAc4nakEpJWryADEr4jmdF4",
@@ -16,3 +17,8 @@ export const app =
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+// Firebase Cloud Messaging
+export const messagingPromise = isSupported().then((supported) =>
+  supported ? getMessaging(app) : null
+);

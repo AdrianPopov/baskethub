@@ -16,12 +16,14 @@ export default function DashboardLayout({
       >
         <Sidebar />
 
-        <main
-          style={{
-            flex: 1,
-            padding: 30,
-          }}
-        >
+ <main
+  style={{
+    flex: 1,
+    padding: 20,
+    paddingBottom: 90,
+    overflowX: "hidden",
+  }}
+>
           {children}
         </main>
       </div>

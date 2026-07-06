@@ -5,6 +5,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 export const metadata: Metadata = {
   title: "BasketHub",
   description: "Basketball management application",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -15,9 +16,7 @@ export default function RootLayout({
   return (
     <html lang="uk">
       <body>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
