@@ -44,29 +44,40 @@ if (!isAdmin) {
   return null;
 }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+async function handleSubmit(e: React.FormEvent) {
+  e.preventDefault();
 
-    if (!user) return;
+  if (!user) return;
 
-await createMatch({
-  homeTeam,
-  awayTeam,
-  homeScore: 0,
-  awayScore: 0,
-  status: "upcoming",
-  location,
-  date: new Date(date).getTime(),
-  createdBy: user.uid,
-  
-});
-    setHomeTeam("");
-    setAwayTeam("");
-    setLocation("");
-    setDate("");
+  await createMatch({
+    homeTeam,
+    awayTeam,
+    homeScore: 0,
+    awayScore: 0,
+    status: "upcoming",
+    location,
+    date: new Date(date).getTime(),
+    createdBy: user.uid,
+  });
 
-    alert("Матч створено!");
-  }
+  await fetch("/api/send-notification", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "🏀 Новий матч!",
+      body: `${homeTeam} — ${awayTeam}\n📍 ${location}`,
+    }),
+  });
+
+  setHomeTeam("");
+  setAwayTeam("");
+  setLocation("");
+  setDate("");
+
+  alert("Матч створено!");
+}
 
   return (
     <div>

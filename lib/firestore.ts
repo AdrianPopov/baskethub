@@ -75,3 +75,13 @@ export async function getUserRole(uid: string) {
 
   return snapshot.data().role as "admin" | "player";
 }
+import { updateDoc } from "firebase/firestore";
+
+export async function saveUserFcmToken(
+  uid: string,
+  token: string
+) {
+  await updateDoc(doc(db, "users", uid), {
+    fcmToken: token,
+  });
+}
