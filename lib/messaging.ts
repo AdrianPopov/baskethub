@@ -12,6 +12,8 @@ export async function requestNotificationPermission() {
 
   const permission = await Notification.requestPermission();
 
+alert("Permission: " + permission);
+
   console.log("Після запиту:", permission);
 
   if (permission !== "granted") {
@@ -20,6 +22,8 @@ export async function requestNotificationPermission() {
   }
 
   const messaging = await messagingPromise;
+
+  alert("Messaging: " + (messaging ? "YES" : "NO"));
 
   console.log("Messaging:", messaging);
 
@@ -34,6 +38,8 @@ export async function requestNotificationPermission() {
     const token = await getToken(messaging, {
   vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
 });
+
+alert("Token: " + (token ? "YES" : "NO"));
 
 alert("FCM: " + token);
 
