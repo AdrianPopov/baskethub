@@ -7,32 +7,36 @@ import { messagingPromise } from "@/lib/firebase";
 import { onMessage } from "firebase/messaging";
 
 export default function NotificationProvider() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
+    if (loading) return;
     if (!user) return;
 
-    requestNotificationPermission();
-
     async function init() {
+      const token = await requestNotificationPermission();
+
+      console.log("FCM:", token);
+
       const messaging = await messagingPromise;
 
       if (!messaging) return;
 
       onMessage(messaging, (payload) => {
-        console.log("Push:", payload);
-
         if (Notification.permission === "granted") {
-          new Notification(payload.notification?.title || "BasketHub", {
-            body: payload.notification?.body,
-            icon: "/icon-192.png",
-          });
+          new Notification(
+            payload.notification?.title || "BasketHub",
+            {
+              body: payload.notification?.body,
+              icon: "/icon-192.png",
+            }
+          );
         }
       });
     }
 
     init();
-  }, [user]);
+  }, [user, loading]);
 
   return null;
 }

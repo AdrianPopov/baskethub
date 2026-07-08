@@ -1,7 +1,5 @@
 "use client";
 
-import { requestNotificationPermission } from "@/lib/messaging";
-import { saveUserFcmToken } from "@/lib/firestore";
 import { User, onAuthStateChanged } from "firebase/auth";
 import {
   createContext,
@@ -38,22 +36,12 @@ export function AuthProvider({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-  alert(
-    currentUser
-      ? "Увійшов: " + currentUser.email
-      : "Користувач NULL"
-  );
+      setUser(currentUser);
 
-     if (currentUser) {
-  const userRole = await getUserRole(currentUser.uid);
-  setRole(userRole as Role);
-
-  const token = await requestNotificationPermission();
-
-  if (token) {
-    await saveUserFcmToken(currentUser.uid, token);
-  }
-} else {
+      if (currentUser) {
+        const userRole = await getUserRole(currentUser.uid);
+        setRole(userRole as Role);
+      } else {
         setRole(null);
       }
 
