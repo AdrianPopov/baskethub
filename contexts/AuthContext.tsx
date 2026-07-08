@@ -38,7 +38,11 @@ export function AuthProvider({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
+  alert(
+    currentUser
+      ? "Увійшов: " + currentUser.email
+      : "Користувач NULL"
+  );
 
      if (currentUser) {
   const userRole = await getUserRole(currentUser.uid);
