@@ -39,11 +39,11 @@ export function AuthProvider({
       setUser(currentUser);
 
       if (currentUser) {
-        const userRole = await getUserRole(currentUser.uid);
-        setRole(userRole as Role);
-      } else {
-        setRole(null);
-      }
+  const userRole = await getUserRole(currentUser.uid);
+  setRole(userRole as Role);
+} else {
+  setRole(null);
+}
 
       setLoading(false);
     });

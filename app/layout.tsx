@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { AuthProvider } from "@/contexts/AuthContext";
-import NotificationProvider from "@/components/NotificationProvider";
 
 export const metadata: Metadata = {
   title: "BasketHub",
@@ -18,7 +17,6 @@ export default function RootLayout({
     <html lang="uk">
       <body>
         <AuthProvider>
-          <NotificationProvider />
           {children}
         </AuthProvider>
       </body>
