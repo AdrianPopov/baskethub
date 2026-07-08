@@ -32,12 +32,14 @@ export async function requestNotificationPermission() {
     console.log("Отримую токен...");
 
     const token = await getToken(messaging, {
-      vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
-    });
+  vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+});
 
-    console.log("FCM Token:", token);
+alert("FCM: " + token);
 
-    const user = auth.currentUser;
+console.log("FCM Token:", token);
+
+const user = auth.currentUser;
 
     if (user && token) {
       await updateDoc(doc(db, "users", user.uid), {
