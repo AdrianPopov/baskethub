@@ -10,9 +10,13 @@ export default function NotificationProvider() {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (!user) return;
+    alert("User: " + (user ? "YES" : "NO"));
 
-    requestNotificationPermission();
+if (!user) return;
+
+alert("Викликаю requestNotificationPermission");
+
+requestNotificationPermission();
 
     async function init() {
       const messaging = await messagingPromise;
