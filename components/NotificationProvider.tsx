@@ -7,16 +7,17 @@ import { messagingPromise } from "@/lib/firebase";
 import { onMessage } from "firebase/messaging";
 
 export default function NotificationProvider() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
-    alert("User: " + (user ? "YES" : "NO"));
+    if (loading) return;
 
-if (!user) return;
+    if (!user) {
+      console.log("Користувач не авторизований");
+      return;
+    }
 
-alert("Викликаю requestNotificationPermission");
-
-requestNotificationPermission();
+    requestNotificationPermission();
 
     async function init() {
       const messaging = await messagingPromise;
@@ -27,16 +28,19 @@ requestNotificationPermission();
         console.log("Push:", payload);
 
         if (Notification.permission === "granted") {
-          new Notification(payload.notification?.title || "BasketHub", {
-            body: payload.notification?.body,
-            icon: "/icon-192.png",
-          });
+          new Notification(
+            payload.notification?.title || "BasketHub",
+            {
+              body: payload.notification?.body,
+              icon: "/icon-192.png",
+            }
+          );
         }
       });
     }
 
     init();
-  }, [user]);
+  }, [user, loading]);
 
   return null;
 }
