@@ -7,15 +7,10 @@ import { messagingPromise } from "@/lib/firebase";
 import { onMessage } from "firebase/messaging";
 
 export default function NotificationProvider() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (loading) return;
-
-    if (!user) {
-      console.log("Користувач не авторизований");
-      return;
-    }
+    if (!user) return;
 
     requestNotificationPermission();
 
@@ -28,19 +23,16 @@ export default function NotificationProvider() {
         console.log("Push:", payload);
 
         if (Notification.permission === "granted") {
-          new Notification(
-            payload.notification?.title || "BasketHub",
-            {
-              body: payload.notification?.body,
-              icon: "/icon-192.png",
-            }
-          );
+          new Notification(payload.notification?.title || "BasketHub", {
+            body: payload.notification?.body,
+            icon: "/icon-192.png",
+          });
         }
       });
     }
 
     init();
-  }, [user, loading]);
+  }, [user]);
 
   return null;
 }

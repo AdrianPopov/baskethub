@@ -4,58 +4,40 @@ import { getToken } from "firebase/messaging";
 import { messagingPromise } from "./firebase";
 
 export async function requestNotificationPermission() {
-  console.log("NotificationProvider запущений");
-
   if (typeof window === "undefined") return null;
-
-  console.log("Permission:", Notification.permission);
 
   const permission = await Notification.requestPermission();
 
-alert("Permission: " + permission);
-
-  console.log("Після запиту:", permission);
-
   if (permission !== "granted") {
-    console.log("Дозвіл не надано");
+    console.log("Дозвіл на сповіщення не надано");
     return null;
   }
 
   const messaging = await messagingPromise;
 
-  alert("Messaging: " + (messaging ? "YES" : "NO"));
-
-  console.log("Messaging:", messaging);
-
   if (!messaging) {
-    console.log("Messaging не підтримується");
+    console.log("Firebase Messaging не підтримується");
     return null;
   }
 
   try {
-    console.log("Отримую токен...");
-
     const token = await getToken(messaging, {
-  vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
-});
+      vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+    });
 
-alert("Token: " + (token ? "YES" : "NO"));
-
-alert("FCM: " + token);
-
-console.log("FCM Token:", token);
+    console.log("FCM Token:", token);
 
 const user = auth.currentUser;
 
-    if (user && token) {
-      await updateDoc(doc(db, "users", user.uid), {
-        fcmToken: token,
-      });
-    }
+if (user && token) {
+  await updateDoc(doc(db, "users", user.uid), {
+    fcmToken: token,
+  });
+}
 
-    return token;
+return token;
   } catch (error) {
-    console.error("getToken error:", error);
+    console.error("Помилка отримання FCM токена:", error);
     return null;
   }
 }
