@@ -1,5 +1,3 @@
-import { auth, db } from "./firebase";
-import { doc, updateDoc } from "firebase/firestore";
 import { getToken } from "firebase/messaging";
 import { messagingPromise } from "./firebase";
 
@@ -27,15 +25,7 @@ export async function requestNotificationPermission() {
 
     console.log("FCM Token:", token);
 
-const user = auth.currentUser;
-
-if (user && token) {
-  await updateDoc(doc(db, "users", user.uid), {
-    fcmToken: token,
-  });
-}
-
-return token;
+    return token;
   } catch (error) {
     console.error("Помилка отримання FCM токена:", error);
     return null;
