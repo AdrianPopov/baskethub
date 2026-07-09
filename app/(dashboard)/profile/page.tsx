@@ -45,7 +45,13 @@ export default function ProfilePage() {
 
       await saveUserFcmToken(user.uid, token);
 
-      alert("✅ Повідомлення успішно увімкнено!");
+console.log("TOKEN SAVED:", token);
+
+const profile = await getUserProfile(user.uid);
+
+console.log("TOKEN IN FIRESTORE:", profile?.fcmToken);
+
+alert("✅ Повідомлення успішно увімкнено!");
     } catch (e) {
       console.error(e);
       alert("Помилка при ввімкненні повідомлень.");
