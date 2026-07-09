@@ -27,6 +27,22 @@ export async function POST(req: Request) {
         body,
       },
     });
+    response.responses.forEach(async (res, index) => {
+  if (!res.success && res.error?.code === "messaging/registration-token-not-registered") {
+    const badToken = tokens[index];
+
+    const users = await adminFirestore
+      .collection("users")
+      .where("fcmToken", "==", badToken)
+      .get();
+
+    users.forEach(async (doc) => {
+      await doc.ref.update({
+        fcmToken: null,
+      });
+    });
+  }
+});
 
     console.log("FULL RESPONSE:");
     console.dir(response, { depth: null });
