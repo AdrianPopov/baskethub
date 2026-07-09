@@ -11,6 +11,8 @@ export async function POST(req: Request) {
       .map((doc) => doc.data().fcmToken)
       .filter(Boolean);
 
+    console.log("TOKENS:", tokens);
+
     if (tokens.length === 0) {
       return NextResponse.json({
         success: false,
@@ -25,7 +27,9 @@ export async function POST(req: Request) {
         body,
       },
     });
-    console.log(response);
+
+    console.log("FULL RESPONSE:");
+    console.dir(response, { depth: null });
 
     return NextResponse.json({
       success: true,
